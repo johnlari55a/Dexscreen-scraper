@@ -44,54 +44,61 @@ class DexBot():
         return headers
 
     def format_token_data(self):
-
         """
         Fetch information about specific tokens from the Dexscreener API.
-
-        Args:
-            token_addresses (list): List of token addresses.
+        Uses async parallel requests in batches of 5 for speed.
 
         Returns:
             dict: A dictionary containing data for each token address or an error message.
         """
-
         token_addresses = self.start()
 
-        base_url = "https://api.dexscreener.com/latest/dex/tokens/"
-        results = {}
-
-        for address in token_addresses:
-            try:
-                # Make an API call for each token address
-                response = requests.get(f"{base_url}{address}")
-                if response.status_code == 200:
-                    data = response.json()
-                    # Store the relevant data for the token address
-                    pairs = data.get('pairs', [])  # 'pairs' contains token market data
-                    
-                    if pairs and len(pairs) > 0:
-                        results[address] = pairs[0]  # Store first pair's data
-                    else:
-                        results[address] = {"pairAddress": address,
-                                            "Error": "No data Retrieved"}
-                else:
-                    # Handle HTTP errors
-                    results[address] = f"Error: Status code {response.status_code}"
-            except requests.RequestException as e:
-                # Handle request exceptions
-                results[address] = f"Error making request: {str(e)}"
-
-        # Extracting values as a list
-        results = list(results.values())
-        # Output the result as JSON
+        # Run async fetching
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(self._fetch_tokens_async(token_addresses))
+        loop.close()
 
         return json.dumps({"data": results}, indent=2)
+
+    async def _fetch_single_token(self, session, address):
+        """Fetch a single token's data"""
+        base_url = "https://api.dexscreener.com/latest/dex/tokens/"
+        try:
+            response = await session.get(f"{base_url}{address}")
+            if response.status_code == 200:
+                data = response.json()
+                pairs = data.get('pairs', [])
+                if pairs and len(pairs) > 0:
+                    return pairs[0]
+                else:
+                    return {"pairAddress": address, "Error": "No data Retrieved"}
+            else:
+                return {"pairAddress": address, "Error": f"Status code {response.status_code}"}
+        except Exception as e:
+            return {"pairAddress": address, "Error": f"Request error: {str(e)}"}
+
+    async def _fetch_tokens_async(self, token_addresses, batch_size=10):
+        """Fetch all tokens in parallel batches"""
+        results = []
+        async with AsyncSession(impersonate='chrome') as session:
+            # Process in batches of 5
+            for i in range(0, len(token_addresses), batch_size):
+                batch = token_addresses[i:i + batch_size]
+                print(f"Fetching batch {i//batch_size + 1}/{(len(token_addresses) + batch_size - 1)//batch_size} ({len(batch)} tokens)...")
+
+                # Fetch batch in parallel
+                tasks = [self._fetch_single_token(session, addr) for addr in batch]
+                batch_results = await asyncio.gather(*tasks)
+                results.extend(batch_results)
+
+        return results
       
 
     async def connect(self):
         headers = self.get_headers()
         try:
-            session = AsyncSession(headers=headers)
+            session = AsyncSession(headers=headers, impersonate='chrome')
             ws = await session.ws_connect(self.url)
             print(self.url)
 
