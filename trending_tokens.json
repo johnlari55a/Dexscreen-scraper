@@ -1,0 +1,52 @@
+[
+  {
+    "address": "So11111111111111111111111111111111111111112",
+    "name": "Wrapped SOL",
+    "symbol": "SOL",
+    "chain": "solana",
+    "price_usd": "129.89",
+    "volume_24h": 69582157.93,
+    "price_change_24h": 1.77,
+    "url": "https://dexscreener.com/solana/3nmfwzxwy1s1m5s8vyahqd4wgs4isxxe4lroummyqegf"
+  },
+  {
+    "address": "CxWPdDBqxVo3fnTMRTvNuSrd4gkp78udSrFvkVDBAGS",
+    "name": "Ralph Wiggum",
+    "symbol": "RALPH",
+    "chain": "solana",
+    "price_usd": "0.005370",
+    "volume_24h": 7483880.62,
+    "price_change_24h": -67.67,
+    "url": "https://dexscreener.com/solana/dbyk8geixwneh2zfw2lo1svuq1wkhaeqyndsrakq6bhf"
+  },
+  {
+    "address": "SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3",
+    "name": "Seeker",
+    "symbol": "SKR",
+    "chain": "solana",
+    "price_usd": "0.03774",
+    "volume_24h": 8715516.57,
+    "price_change_24h": 192,
+    "url": "https://dexscreener.com/solana/vy1zqxjqbwvuwgvftfhqanje96ggoqrx7xzzdrwpgit"
+  },
+  {
+    "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "chain": "solana",
+    "price_usd": "1.00063",
+    "volume_24h": 4164281.25,
+    "price_change_24h": -0.02,
+    "url": "https://dexscreener.com/solana/bztgqeys6exuxicyphecyq7pybqodxqmvkjubp4r8muu"
+  },
+  {
+    "address": "5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2",
+    "name": "TROLL",
+    "symbol": "TROLL",
+    "chain": "solana",
+    "price_usd": "0.03125",
+    "volume_24h": 5501862.04,
+    "price_change_24h": 60.11,
+    "url": "https://dexscreener.com/solana/4w2cysotx6czaugmmwg13hdpy4qemg2czekyeqyk9ama"
+  }
+]

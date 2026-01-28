@@ -35,7 +35,7 @@ This project provides a Flask based Python script 🐍 designed to automate the 
 1.  **Run the scraper 🏃:**
 
     ```bash
-    python -m flask run
+    python -m flask --app api.index run
     ```
 
 2.  **Configuration (Optional) ⚙️:**
